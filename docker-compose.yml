@@ -71,6 +71,18 @@ services:
     networks:
       - default
 
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 11111:8080
+    depends_on:
+      - postgres
+    networks:
+      - default
+      - internal
+
 networks:
   default:
   internal:
