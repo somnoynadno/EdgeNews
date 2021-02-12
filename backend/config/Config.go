@@ -30,19 +30,19 @@ var config *Config
 func init() {
 	defaultConfig := Config{
 		ScrappingIntervals: ScrappingIntervals{
-			MeduzaAPI:      1 * 60,
-			NewsAPI:        4 * 60,
-			NewscatcherAPI: 5 * 60,
-			EchoMskCrawler: 1 * 60,
+			MeduzaAPI:      5 * 60,
+			NewsAPI:        10 * 60,
+			NewscatcherAPI: 15 * 60,
+			EchoMskCrawler: 3 * 60,
 		},
 		ScrappingEnabled: ScrappingEnabled{
 			MeduzaAPI:      true,
-			NewsAPI:        false,
-			NewscatcherAPI: false,
+			NewsAPI:        true,
+			NewscatcherAPI: true,
 			EchoMskCrawler: true,
 		},
 		TextStreamUpdateInterval:  1*60,
-		TextStreamMaxEmptyFetches: 3,
+		TextStreamMaxEmptyFetches: 12*60*60,
 	}
 
 	config = &defaultConfig
