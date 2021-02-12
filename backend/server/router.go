@@ -11,9 +11,14 @@ import (
 
 func InitRouter() {
 	newsHub := GetNewsHub()
+	textStreamHub := GetTextStreamHub()
 
 	http.HandleFunc("/ws/news", func(w http.ResponseWriter, r *http.Request) {
 		HandleConnection(newsHub, w, r)
+	})
+
+	http.HandleFunc("/ws/streams", func(w http.ResponseWriter, r *http.Request) {
+		HandleConnection(textStreamHub, w, r)
 	})
 
 	r := mux.NewRouter()

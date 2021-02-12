@@ -42,9 +42,11 @@ func GetDB() *gorm.DB {
 
 func migrateSchema() error {
 	err := db.AutoMigrate(
+		entities.Message{},
 		entities.News{},
 		entities.ScrapperType{},
 		entities.Source{},
+		entities.TextStream{},
 	).Error
 
 	return err

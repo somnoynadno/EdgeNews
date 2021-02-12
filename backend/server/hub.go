@@ -27,6 +27,7 @@ var newsHub *Hub
 var textStreamHub *Hub
 
 func init() {
+	log.Info("[HUB] Creating hubs...")
 	newsHub = NewHub()
 	textStreamHub = NewHub()
 

@@ -29,6 +29,7 @@ func main() {
 	}
 
 	go daemon.StartAllScrappers()
+	go daemon.StartAllCrawlers()
 
 	server.InitRouter()
 }

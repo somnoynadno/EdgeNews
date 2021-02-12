@@ -6,7 +6,7 @@ import (
 
 type News struct {
 	gorm.Model
-	Title       string `gorm:"index:title"`
+	Title       string `gorm:"index:title;"`
 	Description *string
 	Date        *string
 	Body        *string

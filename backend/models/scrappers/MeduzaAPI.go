@@ -77,7 +77,7 @@ func (s MeduzaScrapper) RunOnce() error {
 
 func (s MeduzaScrapper) RunForever() {
 	log.Info("[MEDUZA API] Starting...")
-	sleepTime := config.GetConfig().ScrappingIntervals.Meduza
+	sleepTime := config.GetConfig().ScrappingIntervals.MeduzaAPI
 
 	for {
 		log.Debug("[MEDUZA API] Awake")

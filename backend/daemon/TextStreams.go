@@ -1,0 +1,17 @@
+package daemon
+
+import (
+	"EdgeNews/backend/config"
+	"EdgeNews/backend/models/crawlers"
+	log "github.com/sirupsen/logrus"
+)
+
+func StartAllCrawlers() {
+	log.Debug("[DAEMON] Starting crawlers...")
+	c := config.GetConfig()
+
+	if c.ScrappingEnabled.EchoMskCrawler == true {
+		echoMskCrawler := crawlers.EchoMskCrawler{}
+		go echoMskCrawler.RunForever()
+	}
+}

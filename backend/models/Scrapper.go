@@ -20,15 +20,15 @@ type ScrapperAPI struct {
 }
 
 func (s ScrapperAPI) RunOnce() error {
-	return errors.New("not implemented")
+	return errors.New("should implement")
 }
 
 func (s ScrapperAPI) RunForever() {
-	log.Error("not implemented")
+	log.Panic("should implement")
 }
 
 func (s ScrapperAPI) SaveNews(news entities.News) error {
-	exist, err := dao.CheckTitleExist(news.Title)
+	exist, err := dao.CheckNewsExistByTitle(news.Title)
 	if err != nil {
 		return err
 	}

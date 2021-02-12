@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func CheckTitleExist(title string) (bool, error) {
+func CheckNewsExistByTitle(title string) (bool, error) {
 	var news entities.News
 	err := db.GetDB().Where("title = ?", title).First(&news).Error
 	if err == gorm.ErrRecordNotFound {

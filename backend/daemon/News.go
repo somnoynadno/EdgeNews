@@ -2,7 +2,7 @@ package daemon
 
 import (
 	"EdgeNews/backend/config"
-	"EdgeNews/backend/scrappers"
+	"EdgeNews/backend/models/scrappers"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -10,7 +10,7 @@ func StartAllScrappers() {
 	log.Debug("[DAEMON] Starting scrappers...")
 	c := config.GetConfig()
 
-	if c.ScrappingEnabled.Meduza == true {
+	if c.ScrappingEnabled.MeduzaAPI == true {
 		medusa := scrappers.MeduzaScrapper{}
 		go medusa.RunForever()
 	}
