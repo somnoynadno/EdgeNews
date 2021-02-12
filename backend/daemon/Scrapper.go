@@ -1,0 +1,27 @@
+package daemon
+
+import (
+	"EdgeNews/backend/config"
+	"EdgeNews/backend/scrappers"
+	log "github.com/sirupsen/logrus"
+)
+
+func StartAllScrappers() {
+	log.Debug("[DAEMON] Starting scrappers...")
+	c := config.GetConfig()
+
+	if c.ScrappingEnabled.Meduza == true {
+		medusa := scrappers.MeduzaScrapper{}
+		go medusa.RunForever()
+	}
+
+	if c.ScrappingEnabled.NewsAPI == true {
+		newsAPI := scrappers.NewsAPIScrapper{}
+		go newsAPI.RunForever()
+	}
+
+	if c.ScrappingEnabled.NewscatcherAPI == true {
+		newscatcherAPI := scrappers.NewscatcherAPIScrapper{}
+		go newscatcherAPI.RunForever()
+	}
+}
