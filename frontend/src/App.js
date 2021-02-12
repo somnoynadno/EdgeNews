@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {bounce, fadeInLeft} from 'react-animations';
-import Radium from 'radium';
 
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {api} from "./http/API";
@@ -82,7 +80,7 @@ export const App = () => {
         <Container maxW="6xl" p={4}>
             <Flex direction={"row"} align={"center"}>
                 <Stack direction={"row"} m={4} align={adaptiveAlign} style={{cursor: "pointer"}}>
-                    <Heading style={styles.bounce} size="xl">EDGE</Heading>
+                    <Heading size="xl">EDGE</Heading>
                     <Heading size="xl"> | </Heading>
                     <Heading color={logoColor} size="xl">News</Heading>
                 </Stack>
@@ -111,7 +109,7 @@ export const App = () => {
                 </Text>
             </Flex>
             {messages.map((m, i) => {
-                return <LinkBox style={styles.fadeInLeft} key={i} as="article" p="5" borderWidth="1px" rounded="md">
+                return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
                     <Box as="time" dateTime={m["CreatedAt"]}>
                         {moment(m["CreatedAt"]).format("LLL")}
                     </Box>
@@ -146,14 +144,3 @@ export const App = () => {
         </Container>
     );
 };
-
-const styles = {
-    bounce: {
-        animation: 'x 1s',
-        animationName: Radium.keyframes(bounce, 'bounce')
-    },
-    fadeInLeft: {
-        animation: 'x 1s',
-        animationName: Radium.keyframes(fadeInLeft, 'fadeInLeft'),
-    },
-}
