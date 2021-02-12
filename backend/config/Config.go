@@ -36,7 +36,7 @@ func init() {
 			EchoMskCrawler: 1 * 60,
 		},
 		ScrappingEnabled: ScrappingEnabled{
-			MeduzaAPI:      false,
+			MeduzaAPI:      true,
 			NewsAPI:        false,
 			NewscatcherAPI: false,
 			EchoMskCrawler: true,
