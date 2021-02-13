@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
-import {Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Text, Tooltip} from "@chakra-ui/react";
+import {Alert, AlertIcon, Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Text, Tooltip} from "@chakra-ui/react";
 import {useBreakpointValue} from "@chakra-ui/media-query";
 
 import moment from "moment";
@@ -40,10 +40,21 @@ export const NewsPage = () => {
             return await api.GetAllSources();
         }
 
+        async function fetchLastNews() {
+            return await api.GetLastNews(25);
+        }
+
         fetchSources().then((s) => {
             setSources(s);
+            fetchLastNews().then((ln) => {
+                setMessages(ln);
+            }).catch((e) => {
+                console.log(e);
+                setErrorText("Произошла ошибка, попробуйте обновить страницу или зайти позже");
+            });
         }).catch((e) => {
-            setErrorText(e.toString());
+            console.log(e);
+            setErrorText("Произошла ошибка, попробуйте обновить страницу или зайти позже");
         });
     }, []);
 
@@ -58,6 +69,9 @@ export const NewsPage = () => {
                     Статус соединения: {connectionStatus}
                 </Text>
             </Flex>
+
+            {errorText ? <Alert status="error"><AlertIcon />{errorText}</Alert> : ''}
+
             {
                 messages.map((m, i) => {
                     return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">

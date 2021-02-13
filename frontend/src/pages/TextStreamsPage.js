@@ -1,19 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
-import {Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Text, Tooltip} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Button,
+    Checkbox,
+    Flex,
+    Heading,
+    Link,
+    LinkBox,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Spacer,
+    Stack,
+    Text,
+    Tooltip,
+    Alert, AlertIcon,
+    useDisclosure,
+} from "@chakra-ui/react";
 
 import {useBreakpointValue} from "@chakra-ui/media-query";
 
 import moment from "moment";
 import {wsAddress} from "../config";
 import {api} from "../http/API";
+import {sortArrayByKey} from "../utils";
 
 
 export const TextStreamsPage = () => {
     const [socketUrl, setSocketUrl] = useState(wsAddress + "/streams");
     const [messages, setMessages] = useState([]);
-
     const {
         readyState,
     } = useWebSocket(socketUrl, {
@@ -22,7 +44,8 @@ export const TextStreamsPage = () => {
         onMessage: (m) => {
             messages.unshift(JSON.parse(m.data));
             setMessages(messages);
-        }
+        },
+        filter: (m) => selectedStreams.includes((JSON.parse(m.data)).TextStreamID),
     });
 
     const connectionStatus = {
@@ -34,7 +57,9 @@ export const TextStreamsPage = () => {
     }[readyState];
 
     let [sources, setSources] = React.useState([]);
+
     let [textStreams, setTextStreams] = React.useState([]);
+    let [selectedStreams, setSelectedStreams] = useState([]);
     let [errorText, setErrorText] = React.useState("");
 
     useEffect(() => {
@@ -51,7 +76,7 @@ export const TextStreamsPage = () => {
             setSources(s);
         }).catch((e) => {
             console.log(e);
-            setErrorText("Произошла ошибка, обновите страницу");
+            setErrorText("Произошла ошибка, обновите страницу или попробуйте снова позже");
         });
 
         fetchActiveStreams().then((ts) => {
@@ -59,21 +84,82 @@ export const TextStreamsPage = () => {
             setTextStreams(ts);
         }).catch((e) => {
             console.log(e);
-            setErrorText("Произошла ошибка, обновите страницу");
+            setErrorText("Произошла ошибка, обновите страницу или попробуйте снова позже");
         });
     }, []);
 
+    const preloadSelectedStreams = async () => {
+        setMessages([]);
+        setErrorText('');
+
+        try {
+            let m = [];
+            for (let s of selectedStreams) {
+                let data = await api.GetMessagesByTextStreamID(s);
+                m = [...m, ...data];
+            }
+            m = sortArrayByKey(m, "CreatedAt", false);
+            setMessages(m);
+        } catch (error) {
+            setErrorText("Произошла ошибка, попробуйте снова позже");
+        }
+    }
+
     const adaptiveDirection = useBreakpointValue({base: "column", sm: "row"});
+    const adaptiveMargin = useBreakpointValue({base: 0, md: 2, lg: 4, xl: 6});
+
+    const {isOpen, onOpen, onClose} = useDisclosure()
 
     return (
         <Box>
             <Flex m={4} direction={adaptiveDirection}>
                 <Heading>Агрегатор онлайнов</Heading>
+                <Button ml={adaptiveMargin} onClick={onOpen}>Фильтрация</Button>
                 <Spacer/>
                 <Text p={3} color={"gray.300"}>
                     Статус соединения: {connectionStatus}
                 </Text>
             </Flex>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>Активные трансляции</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        <Stack pl={2} mt={1} spacing={1}>
+                            {textStreams.map((ts, i) => {
+                                return <Checkbox
+                                    key={i}
+                                    isChecked={selectedStreams.indexOf(ts.ID) !== -1}
+                                    onChange={(e) => {
+                                        let ss = [...selectedStreams];
+
+                                        if (e.target.checked) {
+                                            ss.push(ts.ID);
+                                            setSelectedStreams(ss);
+                                        } else {
+                                            ss = ss.filter(item => item !== ts.ID);
+                                            setSelectedStreams(ss);
+                                        }
+                                    }}
+                                >
+                                    {ts.Name}
+                                </Checkbox>
+                            })}
+                        </Stack>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={() => {onClose(); preloadSelectedStreams()}}>
+                            Применить
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            {errorText ? <Alert status="error"><AlertIcon />{errorText}</Alert> : ''}
+
             {messages.map((m, i) => {
                 return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
                     <Box as="time" dateTime={m["CreatedAt"]}>
@@ -85,9 +171,11 @@ export const TextStreamsPage = () => {
                                 `Источник: ${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Name} ` +
                                 `(${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.URL})`}>
                                 <Link href={textStreams.find(ts => ts.ID === m["TextStreamID"])?.URL}>
-                                <Badge variant="subtle" color={textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Color} ml={2}>
-                                    {textStreams.find(ts => ts.ID === m["TextStreamID"])?.Name}
-                                </Badge>
+                                    <Badge variant="subtle"
+                                           color={textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Color}
+                                           ml={2}>
+                                        {textStreams.find(ts => ts.ID === m["TextStreamID"])?.Name}
+                                    </Badge>
                                 </Link>
                             </Tooltip>
                             : ''

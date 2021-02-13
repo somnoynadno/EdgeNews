@@ -24,7 +24,8 @@ export const ContentWrapper = () => {
     if (window.location.pathname === '/') history.push('/news');
     else return (<Container maxW="6xl" p={4}>
             <Flex direction={"row"} align={"center"}>
-                <Stack direction={"row"} m={4} align={adaptiveAlign} style={{cursor: "pointer"}}>
+                <Stack onClick={() => window.location.reload()} direction={"row"}
+                       m={4} align={adaptiveAlign} style={{cursor: "pointer"}}>
                     <Heading size="xl">EDGE</Heading>
                     <Heading size="xl"> | </Heading>
                     <Heading color={logoColor} size="xl">News</Heading>
