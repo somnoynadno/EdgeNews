@@ -65,7 +65,6 @@ services:
     ports:
       - 3210:3000
     volumes:
-      - /etc/grafana:/etc/grafana
       - grafana_data:/var/lib/grafana
     restart: always
     networks:
