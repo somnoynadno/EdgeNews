@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
 import {Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Text, Tooltip} from "@chakra-ui/react";
-
 import {useBreakpointValue} from "@chakra-ui/media-query";
 
 import moment from "moment";
@@ -70,7 +69,7 @@ export const NewsPage = () => {
                                 <Tooltip label={
                                     `Агрегатор: ${sources[m["SourceID"] - 1]["Name"]} ` +
                                     `(${sources[m["SourceID"] - 1]["ScrapperType"]["Name"]})`}>
-                                    <Badge variant="subtle" color={sources[m["SourceID"] - 1]["Color"]} ml={2}>
+                                    <Badge variant="outline" color={sources[m["SourceID"] - 1]["Color"]} ml={2}>
                                         {m["Rights"]}
                                     </Badge>
                                 </Tooltip>
@@ -88,7 +87,7 @@ export const NewsPage = () => {
                             <Text as="i" fontSize="xs">{m["Date"]}</Text>
                             <Spacer/>
                             <Text as="i" fontSize="xs" color={"gray.300"}>
-                                {m["Tag"] ? `Тег: ${m["Tag"]}` : `Без тега`}
+                                {m["Tag"] ? `Tag: ${m["Tag"]}` : `Без тега`}
                             </Text>
                         </Flex>
                     </LinkBox>

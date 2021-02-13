@@ -24,4 +24,9 @@ func StartAllScrappers() {
 		newscatcherAPI := scrappers.NewscatcherAPIScrapper{}
 		go newscatcherAPI.RunForever()
 	}
+
+	if c.ScrappingEnabled.OnoMediaAPI == true {
+		onoMedia := scrappers.OnoMediaScrapper{}
+		go onoMedia.RunForever()
+	}
 }
