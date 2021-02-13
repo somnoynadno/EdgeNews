@@ -19,3 +19,9 @@ func CheckNewsExistByTitle(title string) (bool, error) {
 func AddNews(news *entities.News) error {
 	return db.GetDB().Create(news).Error
 }
+
+func GetLastNews(amount int) ([]entities.News, error) {
+	var news []entities.News
+	err := db.GetDB().Order("id desc").Limit(amount).Find(&news).Error
+	return news, err
+}

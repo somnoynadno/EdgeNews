@@ -25,6 +25,9 @@ func InitRouter() {
 
 	r.HandleFunc("/api/sources", controller.GetAllSources).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc("/api/active_streams", controller.GetActiveTextStreams).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/api/messages_by_stream/{id}", controller.GetMessagesByTextStreamID).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/api/last_news", controller.GetLastNews).Methods(http.MethodGet, http.MethodOptions)
+
 	r.Handle("/metrics", promhttp.Handler())
 	http.Handle("/", r)
 

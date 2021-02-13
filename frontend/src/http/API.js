@@ -17,6 +17,22 @@ export class API {
                 .catch(error => reject(error));
         })
     }
+
+    GetLastNews(amount=10) {
+        return new Promise((resolve, reject) => {
+            axios.get(apiAddress + `/last_news?amount=${amount}`,)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        })
+    }
+
+    GetMessagesByTextStreamID(textStreamID) {
+        return new Promise((resolve, reject) => {
+            axios.get(apiAddress + `/messages_by_stream/${textStreamID}`,)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        })
+    }
 }
 
 export const api = new API();

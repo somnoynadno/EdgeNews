@@ -19,3 +19,9 @@ func CheckMessageExistByBody(body string) (bool, error) {
 func AddMessage(message *entities.Message) error {
 	return db.GetDB().Create(message).Error
 }
+
+func GetMessagesByTextStreamID(textStreamID int) ([]entities.Message, error) {
+	var messages []entities.Message
+	err := db.GetDB().Where("text_stream_id = ?", textStreamID).Find(&messages).Error
+	return messages, err
+}

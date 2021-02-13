@@ -29,4 +29,3 @@ func RespondJSON(w http.ResponseWriter, data []byte) {
 var HandleOptions = func(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
-
