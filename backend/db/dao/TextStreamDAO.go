@@ -21,5 +21,12 @@ func AddTextStream(textStream *entities.TextStream) error {
 }
 
 func FinishTextStream(textStream *entities.TextStream) error {
-	return db.GetDB().Model(textStream).Update("is_active", false).Error
+	return db.GetDB().Model(textStream).Update("is_active", "false").Error
+}
+
+func GetActiveTextStreams() ([]entities.TextStream, error) {
+	var textStreams []entities.TextStream
+	err := db.GetDB().Preload("Source").Preload("Source.ScrapperType").
+		Where("is_active = true").Find(&textStreams).Error
+	return textStreams, err
 }

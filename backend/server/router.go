@@ -24,6 +24,7 @@ func InitRouter() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/api/sources", controller.GetAllSources).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/api/active_streams", controller.GetActiveTextStreams).Methods(http.MethodGet, http.MethodOptions)
 	r.Handle("/metrics", promhttp.Handler())
 	http.Handle("/", r)
 
