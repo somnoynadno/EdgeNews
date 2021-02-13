@@ -14,4 +14,9 @@ func StartAllCrawlers() {
 		echoMskCrawler := crawlers.EchoMskCrawler{}
 		go echoMskCrawler.RunForever()
 	}
+
+	if c.ScrappingEnabled.KulichkiCrawler == true {
+		kulichkiCrawler := crawlers.KulichkiCrawler{}
+		go kulichkiCrawler.RunForever()
+	}
 }
