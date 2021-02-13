@@ -23,3 +23,15 @@
 При наличии докера развёртывается одной командой:
 
 ``` $ docker-compose up --build -d ```
+
+## Конфигурация
+
+Для изменения конфигурации по умолчанию можно редактировать по необходимости:
+
+1. ```docker-compose.yml``` - основной сборочный скрипт
+
+2. ```prometheus.yml``` - таргеты Prometheus
+
+3. ```backend/.env``` и ```backend/config/Config.go```
+
+3. ```frontend/src/config.js```
