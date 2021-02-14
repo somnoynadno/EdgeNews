@@ -191,13 +191,13 @@ export const TextStreamsPage = () => {
                     {
                         sources.length > 0 && textStreams.length > 0 ?
                             <Tooltip label={
-                                `Источник: ${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Name} ` +
+                                `Источник: ${textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Source.Name} ` +
                                 `(${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.URL})`}>
-                                <Link href={textStreams.find(ts => ts.ID === m["TextStreamID"])?.URL}>
+                                <Link href={textStreams?.find(ts => ts.ID === m["TextStreamID"])?.URL}>
                                     <Badge variant="subtle"
-                                           color={textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Color}
+                                           color={textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Source.Color}
                                            ml={2}>
-                                        {textStreams.find(ts => ts.ID === m["TextStreamID"])?.Name}
+                                        {textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Name}
                                     </Badge>
                                 </Link>
                             </Tooltip>
