@@ -73,7 +73,7 @@ export const NewsPage = () => {
             {errorText ? <Alert status="error"><AlertIcon />{errorText}</Alert> : ''}
 
             {
-                messages.map((m, i) => {
+                sources ? messages.map((m, i) => {
                     return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
                         <Box as="time" dateTime={m["CreatedAt"]}>
                             {moment(m["CreatedAt"]).format("LLL")}
@@ -105,7 +105,7 @@ export const NewsPage = () => {
                             </Text>
                         </Flex>
                     </LinkBox>
-                })
+                }) : ''
             }
         </Box>
     );
