@@ -6,6 +6,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Divider,
     Flex,
     Heading,
     Link,
@@ -61,7 +62,6 @@ export const TextStreamsPage = () => {
     let [textStreams, setTextStreams] = React.useState([]);
     let [selectedStreams, setSelectedStreams] = useState([]);
     let [errorText, setErrorText] = React.useState("");
-
     useEffect(() => {
         async function fetchSources() {
             return await api.GetAllSources();
@@ -105,6 +105,8 @@ export const TextStreamsPage = () => {
         }
     }
 
+    let dividedStreams = [];
+
     const adaptiveDirection = useBreakpointValue({base: "column", sm: "row"});
     const adaptiveMargin = useBreakpointValue({base: 0, md: 2, lg: 4, xl: 6});
 
@@ -128,27 +130,40 @@ export const TextStreamsPage = () => {
                     <ModalCloseButton/>
                     <ModalBody>
                         <Stack pl={2} mt={1} spacing={1}>
-                            {textStreams.map((ts, i) => {
-                                return <Checkbox
-                                    key={i}
-                                    isChecked={selectedStreams.indexOf(ts.ID) !== -1}
-                                    onChange={(e) => {
-                                        let ss = [...selectedStreams];
+                            {
+                                sortArrayByKey(textStreams, "SourceID").map((ts, i) => {
+                                    const checkbox = <Checkbox
+                                        key={i}
+                                        isChecked={selectedStreams.indexOf(ts.ID) !== -1}
+                                        onChange={(e) => {
+                                            let ss = [...selectedStreams];
 
-                                        if (e.target.checked) {
-                                            ss.push(ts.ID);
-                                            setSelectedStreams(ss);
-                                        } else {
-                                            ss = ss.filter(item => item !== ts.ID);
-                                            setSelectedStreams(ss);
-                                        }
-                                    }}
-                                >
-                                    {ts.Name} &nbsp;
-                                    <Badge>{
-                                        ts.LastStreamUpdate ? moment(ts.LastStreamUpdate).format("hh:mm") : ''
-                                    }</Badge>
-                                </Checkbox>
+                                            if (e.target.checked) {
+                                                ss.push(ts.ID);
+                                                setSelectedStreams(ss);
+                                            } else {
+                                                ss = ss.filter(item => item !== ts.ID);
+                                                setSelectedStreams(ss);
+                                            }
+                                        }}
+                                    >
+                                        {ts.Name} &nbsp;
+                                        <Badge>{
+                                            ts.LastStreamUpdate ? moment(ts.LastStreamUpdate).format("hh:mm") : ''
+                                        }</Badge>
+                                    </Checkbox>
+                                    if (dividedStreams.find((elem) => elem === ts.SourceID)) {
+                                        return checkbox;
+                                    } else {
+                                        dividedStreams.push(ts.SourceID);
+                                        const heading = <Heading p={2} as="h5" size="sm">
+                                            {sources.find((elem) => elem.ID === ts.SourceID).Name}
+                                        </Heading>
+                                        return <div>
+                                            {heading}
+                                            {checkbox}
+                                        </div>
+                                    }
                             })}
                         </Stack>
                     </ModalBody>
