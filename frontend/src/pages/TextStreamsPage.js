@@ -62,13 +62,10 @@ export const TextStreamsPage = () => {
     let [textStreams, setTextStreams] = React.useState([]);
     let [selectedStreams, setSelectedStreams] = useState([]);
     let [errorText, setErrorText] = React.useState("");
+
     useEffect(() => {
         async function fetchSources() {
             return await api.GetAllSources();
-        }
-
-        async function fetchActiveStreams() {
-            return await api.GetActiveTextStreams();
         }
 
         fetchSources().then((s) => {
@@ -78,14 +75,25 @@ export const TextStreamsPage = () => {
             console.log(e);
             setErrorText("Произошла ошибка, обновите страницу или попробуйте снова позже");
         });
+    }, []);
 
-        fetchActiveStreams().then((ts) => {
-            console.log(ts);
-            setTextStreams(ts);
-        }).catch((e) => {
-            console.log(e);
-            setErrorText("Произошла ошибка, обновите страницу или попробуйте снова позже");
-        });
+    useEffect(() => {
+        async function fetchActiveStreams() {
+            await api.GetActiveTextStreams().then((ts) => {
+                console.log(ts);
+                setTextStreams(ts);
+            }).catch((e) => {
+                console.log(e);
+                setErrorText("Произошла ошибка, обновите страницу или попробуйте снова позже");
+            });
+        }
+
+        const timer = setInterval(() => {
+            fetchActiveStreams()
+        }, 1000 * 90);
+
+        fetchActiveStreams();
+        return () => clearInterval(timer);
     }, []);
 
     const preloadSelectedStreams = async () => {
