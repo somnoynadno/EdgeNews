@@ -141,7 +141,7 @@ export const TextStreamsPage = () => {
                             {
                                 sources ? sortArrayByKey(textStreams, "SourceID").map((ts, i) => {
                                     const checkbox = <Checkbox
-                                        key={i}
+                                        key={"cb-" + i}
                                         isChecked={selectedStreams.indexOf(ts.ID) !== -1}
                                         onChange={(e) => {
                                             let ss = [...selectedStreams];
@@ -192,7 +192,7 @@ export const TextStreamsPage = () => {
 
             {sources ? messages.map((m, i) => {
                 let body = m?.Body.trim().split('\n');
-                return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
+                return <LinkBox key={"lb-" + i} as="article" p="5" borderWidth="1px" rounded="md">
                     <Box as="time" dateTime={m["CreatedAt"]}>
                         {moment(m["CreatedAt"]).format("LLL")}
                     </Box>
@@ -216,8 +216,9 @@ export const TextStreamsPage = () => {
                     </Heading>
                     <Text mb={2}>
                         {body.map((text, index) => {
-                            if (index === body.length - 1) return <span key={index}>{text}</span>
-                            return <span key={index}>{text}<br/><br/></span>
+                            const k = "text-" + i + "-" + index;
+                            if (index === body.length - 1) return <span key={k}>{text}</span>
+                            return <span key={k}>{text}<br/><br/></span>
                         })}
                     </Text>
                     <Flex direction={adaptiveDirection}>

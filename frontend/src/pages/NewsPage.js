@@ -74,7 +74,7 @@ export const NewsPage = () => {
 
             {
                 sources ? messages.map((m, i) => {
-                    return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
+                    return <LinkBox key={"item-" + i} as="article" p="5" borderWidth="1px" rounded="md">
                         <Box as="time" dateTime={m["CreatedAt"]}>
                             {moment(m["CreatedAt"]).format("LLL")}
                         </Box>
@@ -90,7 +90,7 @@ export const NewsPage = () => {
                                 : ''
                         }
                         <Heading size="md" my="2">
-                            <Link href={m["URL"]} external={true}>
+                            <Link href={m["URL"]}>
                                 {m["Title"]}
                             </Link>
                         </Heading>
