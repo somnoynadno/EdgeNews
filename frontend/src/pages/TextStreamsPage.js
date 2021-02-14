@@ -110,7 +110,7 @@ export const TextStreamsPage = () => {
     const adaptiveDirection = useBreakpointValue({base: "column", sm: "row"});
     const adaptiveMargin = useBreakpointValue({base: 0, md: 2, lg: 4, xl: 6});
 
-    const {isOpen, onOpen, onClose} = useDisclosure()
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
         <Box>

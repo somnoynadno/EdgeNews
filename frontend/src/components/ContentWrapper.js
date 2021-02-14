@@ -1,11 +1,31 @@
 import React from 'react';
 import {Route} from "react-router-dom";
 
-import {Box, Button, Container, Divider, Flex, Heading, IconButton, Spacer, Stack} from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Container,
+    Divider,
+    Flex,
+    Heading,
+    IconButton,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Spacer,
+    Link,
+    Stack,
+    Text,
+    useDisclosure
+} from "@chakra-ui/react";
 
 import {useColorMode, useColorModeValue} from "@chakra-ui/color-mode";
 import {useBreakpointValue} from "@chakra-ui/media-query";
-import {MoonIcon, SunIcon} from "@chakra-ui/icons";
+import {MoonIcon, QuestionIcon, QuestionOutlineIcon, SunIcon} from "@chakra-ui/icons";
 
 import {TextStreamsPage} from "../pages/TextStreamsPage";
 import {NewsPage} from "../pages/NewsPage";
@@ -20,6 +40,8 @@ export const ContentWrapper = () => {
     const adaptiveAlign = useBreakpointValue({base: "center", sm: "stretch"});
 
     const logoColor = useColorModeValue("gray.600", "gray.400");
+
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     if (window.location.pathname === '/') history.push('/news');
     else return (<Container maxW="6xl" p={4}>
@@ -45,7 +67,8 @@ export const ContentWrapper = () => {
                 <Stack direction={"row"} m={3}>
                     <IconButton colorScheme="gray" onClick={toggleColorMode} aria-label="Switch-Theme"
                                 icon={colorMode === "light" ? <MoonIcon/> : <SunIcon/>}/>
-                    <Button colorScheme="teal">?</Button>
+                    <IconButton onClick={onOpen} colorScheme="gray"
+                                icon={colorMode === "light" ? <QuestionOutlineIcon/> : <QuestionIcon/>}/>
                 </Stack>
             </Flex>
             <Divider mb={5}/>
@@ -53,6 +76,34 @@ export const ContentWrapper = () => {
                 <Route exact path="/news" component={NewsPage}/>
                 <Route exact path="/streams" component={TextStreamsPage}/>
             </Box>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>О сервисе</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        <Text>
+                            <strong>EDGE News</strong> представляет собой агрегатор последних новостных сводок
+                            и текстовых онлайн трансляций с самых популярных новостных ресурсов
+                            в режиме реального времени.
+                        </Text>
+                        <br/>
+                        <Text>
+                            Для мониторинга интересных вам событий воспользуйтесь кнопной фильтрации в
+                            разделе "Агрегатор Онлайнов".
+                        </Text>
+                        <Divider m={4}/>
+                        <Text fontSize="sm">Разработчик: <Link href={"https://github.com/somnoynadno"}>@somnoynadno</Link></Text>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Понятно
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Container>
     );
 };
