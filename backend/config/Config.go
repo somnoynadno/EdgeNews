@@ -50,7 +50,7 @@ func init() {
 			KulichkiCrawler: true,
 		},
 		TextStreamUpdateInterval:  1 * 60,
-		TextStreamMaxEmptyFetches: 1 * 60 * 60,
+		TextStreamMaxEmptyFetches: 12 * 60,
 	}
 
 	config = &defaultConfig

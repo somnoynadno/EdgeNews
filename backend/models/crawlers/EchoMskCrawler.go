@@ -107,6 +107,7 @@ func (c EchoMskCrawler) StartTextStream(textStream entities.TextStream) {
 			if fetched > 0 {
 				log.Debug("[ECHO MSK CRAWLER] New messages: " + strconv.Itoa(fetched))
 				emptyFetchesCounter = 0
+				go dao.SetStreamUpdated(&textStream)
 			} else {
 				emptyFetchesCounter++
 			}

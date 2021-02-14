@@ -144,7 +144,10 @@ export const TextStreamsPage = () => {
                                         }
                                     }}
                                 >
-                                    {ts.Name}
+                                    {ts.Name} &nbsp;
+                                    <Badge>{
+                                        ts.LastStreamUpdate ? moment(ts.LastStreamUpdate).format("hh:mm") : ''
+                                    }</Badge>
                                 </Checkbox>
                             })}
                         </Stack>

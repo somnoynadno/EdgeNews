@@ -4,6 +4,7 @@ import (
 	"EdgeNews/backend/db"
 	"EdgeNews/backend/models/entities"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 func CheckTextStreamExistByURL(url string) (bool, error) {
@@ -20,8 +21,12 @@ func AddTextStream(textStream *entities.TextStream) error {
 	return db.GetDB().Create(textStream).Error
 }
 
+func SetStreamUpdated(textStream *entities.TextStream) error {
+	return db.GetDB().Model(textStream).Update("last_stream_update", time.Now()).Error
+}
+
 func FinishTextStream(textStream *entities.TextStream) error {
-	return db.GetDB().Model(textStream).Update("is_active", "false").Error
+	return db.GetDB().Model(textStream).Update("is_active", false).Error
 }
 
 func GetActiveTextStreams() ([]entities.TextStream, error) {

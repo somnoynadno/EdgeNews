@@ -122,6 +122,7 @@ func (c KulichkiCrawler) StartTextStream(textStream entities.TextStream) {
 			if fetched > 0 {
 				log.Debug("[KULICHKI CRAWLER] New messages: " + strconv.Itoa(fetched))
 				emptyFetchesCounter = 0
+				go dao.SetStreamUpdated(&textStream)
 			} else {
 				emptyFetchesCounter++
 			}

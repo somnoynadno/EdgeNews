@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
-import {Alert, AlertIcon, Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Text, Tooltip} from "@chakra-ui/react";
+import {Alert, AlertIcon, Badge, Box, Flex, Heading, Link, LinkBox, Spacer, Tag, Text, Tooltip} from "@chakra-ui/react";
 import {useBreakpointValue} from "@chakra-ui/media-query";
 
 import moment from "moment";
@@ -101,7 +101,7 @@ export const NewsPage = () => {
                             <Text as="i" fontSize="xs">{m["Date"]}</Text>
                             <Spacer/>
                             <Text as="i" fontSize="xs" color={"gray.300"}>
-                                {m["Tag"] ? `Tag: ${m["Tag"]}` : `Без тега`}
+                                {m["Tag"] ? <Tag size={"sm"} variant="subtle" colorScheme="teal">{m["Tag"]}</Tag> : ``}
                             </Text>
                         </Flex>
                     </LinkBox>
