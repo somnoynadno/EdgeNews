@@ -164,8 +164,9 @@ export const TextStreamsPage = () => {
                                         return checkbox;
                                     } else {
                                         dividedStreams.push(ts.SourceID);
+                                        const elem = sources.find((elem) => elem.ID === ts.SourceID);
                                         const heading = <Heading p={2} as="h5" size="sm">
-                                            {sources.find((elem) => elem.ID === ts.SourceID).Name}
+                                            <Link href={elem.URL}>{elem.Name}</Link>
                                         </Heading>
                                         return <div>
                                             {heading}
