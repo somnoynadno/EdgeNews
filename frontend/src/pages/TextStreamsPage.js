@@ -46,7 +46,7 @@ export const TextStreamsPage = () => {
             messages.unshift(JSON.parse(m.data));
             setMessages(messages);
         },
-        filter: (m) => selectedStreams.includes((JSON.parse(m.data)).TextStreamID),
+        filter: (m) => selectedStreams.includes((JSON.parse(m.data)).TextStreamID) === true,
     });
 
     const connectionStatus = {
@@ -164,14 +164,16 @@ export const TextStreamsPage = () => {
                                         return checkbox;
                                     } else {
                                         dividedStreams.push(ts.SourceID);
-                                        const elem = sources.find((elem) => elem.ID === ts.SourceID);
-                                        const heading = <Heading p={2} as="h5" size="sm">
-                                            <Link href={elem.URL}>{elem.Name}</Link>
-                                        </Heading>
-                                        return <div>
-                                            {heading}
-                                            {checkbox}
-                                        </div>
+                                        if (sources) {
+                                            const elem = sources.find((elem) => elem.ID === ts.SourceID);
+                                            const heading = <Heading p={2} as="h5" size="sm">
+                                                <Link href={elem.URL}>{elem.Name}</Link>
+                                            </Heading>
+                                            return <div>
+                                                {heading}
+                                                {checkbox}
+                                            </div>
+                                        } else return ''
                                     }
                                 }) : ''
                             }
@@ -198,15 +200,15 @@ export const TextStreamsPage = () => {
                         {moment(m["CreatedAt"]).format("LLL")}
                     </Box>
                     {
-                        sources.length > 0 && textStreams.length > 0 ?
+                        (sources && textStreams) ?
                             <Tooltip label={
-                                `Источник: ${textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Source.Name} ` +
+                                `Источник: ${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Name} ` +
                                 `(${textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.URL})`}>
-                                <Link href={textStreams?.find(ts => ts.ID === m["TextStreamID"])?.URL}>
+                                <Link href={textStreams.find(ts => ts.ID === m["TextStreamID"])?.URL}>
                                     <Badge variant="subtle"
-                                           color={textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Source.Color}
+                                           color={textStreams.find(ts => ts.ID === m["TextStreamID"])?.Source.Color}
                                            ml={2}>
-                                        {textStreams?.find(ts => ts.ID === m["TextStreamID"])?.Name}
+                                        {textStreams.find(ts => ts.ID === m["TextStreamID"])?.Name}
                                     </Badge>
                                 </Link>
                             </Tooltip>
