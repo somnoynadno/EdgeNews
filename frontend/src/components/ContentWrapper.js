@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from "react-router-dom";
+import {Route, Redirect} from "react-router-dom";
 
 import {
     Box,
@@ -43,10 +43,10 @@ export const ContentWrapper = () => {
 
     const {isOpen, onOpen, onClose} = useDisclosure();
 
-    if (window.location.pathname === '/') history.push('/news');
-    else return (<Container maxW="6xl" p={4}>
+    return (
+        <Container maxW="6xl" p={4}>
             <Flex direction={"row"} align={"center"}>
-                <Stack onClick={() => window.location.reload()} direction={"row"}
+                <Stack onClick={() => history.push('/news')} direction={"row"}
                        m={4} align={adaptiveAlign} style={{cursor: "pointer"}}>
                     <Heading size="xl">EDGE</Heading>
                     <Heading size="xl"> | </Heading>
@@ -72,7 +72,11 @@ export const ContentWrapper = () => {
                 </Stack>
             </Flex>
             <Divider mb={5}/>
+
             <Box>
+                <Route exact path="/">
+                    <Redirect to="/news"/>
+                </Route>
                 <Route exact path="/news" component={NewsPage}/>
                 <Route exact path="/streams" component={TextStreamsPage}/>
             </Box>
