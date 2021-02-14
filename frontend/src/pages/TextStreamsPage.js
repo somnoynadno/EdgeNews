@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
 import {
+    Alert,
+    AlertIcon,
     Badge,
     Box,
     Button,
     Checkbox,
-    Divider,
     Flex,
     Heading,
     Link,
@@ -22,7 +23,6 @@ import {
     Stack,
     Text,
     Tooltip,
-    Alert, AlertIcon,
     useDisclosure,
 } from "@chakra-ui/react";
 
@@ -131,7 +131,7 @@ export const TextStreamsPage = () => {
                     <ModalBody>
                         <Stack pl={2} mt={1} spacing={1}>
                             {
-                                sortArrayByKey(textStreams, "SourceID").map((ts, i) => {
+                                sources ? sortArrayByKey(textStreams, "SourceID").map((ts, i) => {
                                     const checkbox = <Checkbox
                                         key={i}
                                         isChecked={selectedStreams.indexOf(ts.ID) !== -1}
@@ -164,21 +164,26 @@ export const TextStreamsPage = () => {
                                             {checkbox}
                                         </div>
                                     }
-                            })}
+                                }) : ''
+                            }
                         </Stack>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={() => {onClose(); preloadSelectedStreams()}}>
+                        <Button colorScheme="blue" mr={3} onClick={() => {
+                            onClose();
+                            preloadSelectedStreams()
+                        }}>
                             Применить
                         </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
 
-            {errorText ? <Alert status="error"><AlertIcon />{errorText}</Alert> : ''}
+            {errorText ? <Alert status="error"><AlertIcon/>{errorText}</Alert> : ''}
 
             {sources ? messages.map((m, i) => {
+                let body = m?.Body.trim().split('\n');
                 return <LinkBox key={i} as="article" p="5" borderWidth="1px" rounded="md">
                     <Box as="time" dateTime={m["CreatedAt"]}>
                         {moment(m["CreatedAt"]).format("LLL")}
@@ -202,7 +207,10 @@ export const TextStreamsPage = () => {
                         {m["Title"]}
                     </Heading>
                     <Text mb={2}>
-                        {m["Body"]}
+                        {body.map((text, index) => {
+                            if (index === body.length - 1) return <span key={index}>{text}</span>
+                            return <span key={index}>{text}<br/><br/></span>
+                        })}
                     </Text>
                     <Flex direction={adaptiveDirection}>
                         <Text as="i" fontSize="xs">{m["Time"]}</Text>

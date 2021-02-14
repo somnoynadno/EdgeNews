@@ -156,11 +156,13 @@ func (c ZonaMediaCrawler) fetchMessages(textStream entities.TextStream) (int, er
 
 	selection.Each(func(i int, s *goquery.Selection) {
 		t := s.Find(".mz-publish__time-header").Text()
-		content := s.Find("body p").Text()
 
-		log.Debug(content)
+		text := ""
+		s.Find("body p").Each(func(i int, c *goquery.Selection) {
+			text += c.Text() + "\n"
+ 		})
 
-		exists, err := dao.CheckMessageExistByBody(content)
+		exists, err := dao.CheckMessageExistByBody(text)
 		if err != nil {
 			log.Error("[ZONA MEDIA CRAWLER] " + err.Error())
 		} else {
@@ -168,7 +170,7 @@ func (c ZonaMediaCrawler) fetchMessages(textStream entities.TextStream) (int, er
 				newMessages++
 				message := entities.Message{
 					TextStreamID: textStream.ID,
-					Body: content,
+					Body: text,
 					Time: &t,
 				}
 				err := c.SaveMessage(message)
