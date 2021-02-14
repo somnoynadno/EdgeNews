@@ -45,7 +45,6 @@ func GetTextStreamHub() *Hub {
 
 func (h *Hub) SendMessage(message []byte) {
 	log.Info("[HUB] Broadcast: " + string(message))
-	utils.GetMetrics().WS.BroadcastMessages.Inc()
 	h.broadcast <- message
 }
 

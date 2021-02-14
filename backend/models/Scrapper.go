@@ -4,6 +4,7 @@ import (
 	"EdgeNews/backend/db/dao"
 	"EdgeNews/backend/models/entities"
 	"EdgeNews/backend/server"
+	"EdgeNews/backend/utils"
 	"encoding/json"
 	"errors"
 	log "github.com/sirupsen/logrus"
@@ -40,6 +41,7 @@ func (s ScrapperAPI) SaveNews(news entities.News) error {
 		}
 
 		b, _ := json.Marshal(news)
+		utils.GetMetrics().WS.BroadcastMessages.WithLabelValues("api scrapper").Inc()
 		go server.GetNewsHub().SendMessage(b)
 	}
 

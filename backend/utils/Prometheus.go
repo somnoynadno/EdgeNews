@@ -24,7 +24,7 @@ type scrapings struct {
 
 type websocket struct {
 	ConnectionsActive prometheus.Gauge
-	BroadcastMessages prometheus.Counter
+	BroadcastMessages prometheus.CounterVec
 }
 
 var metrics *Metrics
@@ -58,10 +58,10 @@ var (
 		Name: "edge_ws_active_connections",
 		Help: "Number of active connections on websocket",
 	})
-	promHubBroadcastMessages = prometheus.NewCounter(prometheus.CounterOpts{
+	promHubBroadcastMessages = prometheus.NewCounterVec(prometheus.CounterOpts{
 		Name: "edge_ws_broadcast_messages",
 		Help: "Number of sent websocket messages",
-	})
+	}, labels)
 )
 
 func init() {
@@ -80,7 +80,7 @@ func init() {
 		},
 		WS: websocket{
 			ConnectionsActive: promHubConnectionsActive,
-			BroadcastMessages: promHubBroadcastMessages,
+			BroadcastMessages: *promHubBroadcastMessages,
 		},
 	}
 }

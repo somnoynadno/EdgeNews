@@ -4,6 +4,7 @@ import (
 	"EdgeNews/backend/db/dao"
 	"EdgeNews/backend/models/entities"
 	"EdgeNews/backend/server"
+	"EdgeNews/backend/utils"
 	"encoding/json"
 	"errors"
 	log "github.com/sirupsen/logrus"
@@ -45,6 +46,7 @@ func (c StaticWebCrawler) SaveMessage(message entities.Message) error {
 		}
 
 		b, _ := json.Marshal(message)
+		utils.GetMetrics().WS.BroadcastMessages.WithLabelValues("static crawler").Inc()
 		go server.GetTextStreamHub().SendMessage(b)
 	}
 
