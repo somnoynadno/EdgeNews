@@ -19,4 +19,9 @@ func StartAllCrawlers() {
 		kulichkiCrawler := crawlers.KulichkiCrawler{}
 		go kulichkiCrawler.RunForever()
 	}
+
+	if c.ScrappingEnabled.ZonaMediaCrawler == true {
+		zonaMediaCrawler := crawlers.ZonaMediaCrawler{}
+		go zonaMediaCrawler.RunForever()
+	}
 }
