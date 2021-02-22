@@ -70,8 +70,8 @@ func (c EchoMskCrawler) FindAvailableTextStreams() error {
 			if !exists {
 				textStream := entities.TextStream{
 					SourceID: 4,
-					URL: link,
-					Name: s.Find(".title").Text(),
+					URL:      link,
+					Name:     s.Find(".title").Text(),
 					IsActive: true,
 				}
 
@@ -158,7 +158,7 @@ func (c EchoMskCrawler) fetchMessages(textStream entities.TextStream) (int, erro
 		t := s.Find(".online__list-item-time").Text()
 		content := s.Find(".online__list-item-content").Text()
 
-		exists, err := dao.CheckMessageExistByBody(content)
+		exists, err := dao.CheckMessageExist(content, textStream.ID)
 		if err != nil {
 			log.Error("[ECHO MSK CRAWLER] " + err.Error())
 		} else {
@@ -166,8 +166,8 @@ func (c EchoMskCrawler) fetchMessages(textStream entities.TextStream) (int, erro
 				newMessages++
 				message := entities.Message{
 					TextStreamID: textStream.ID,
-					Body: content,
-					Time: &t,
+					Body:         content,
+					Time:         &t,
 				}
 				err := c.SaveMessage(message)
 				if err != nil {

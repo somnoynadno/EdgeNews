@@ -8,7 +8,8 @@ type ScrapperType struct {
 }
 
 var DefaultScrapperTypes = []ScrapperType{
-	{Name: "Open API"},
-	{Name: "Commercial API"},
-	{Name: "Static Web-Crawler"},
+	{Name: "Open API"},            // 1
+	{Name: "Commercial API"},      // 2
+	{Name: "Static Web-Crawler"},  // 3
+	{Name: "Dynamic Web-Crawler"}, // 4
 }

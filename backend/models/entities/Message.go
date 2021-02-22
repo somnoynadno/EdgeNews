@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Message struct {
 	gorm.Model
-	Body         string `gorm:"index:body;"`
+	Body         string
 	Title        *string
 	Time         *string
 	TextStreamID uint

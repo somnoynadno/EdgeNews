@@ -18,4 +18,5 @@ var DefaultSources = []Source{
 	{Name: "Эхо Москвы", ScrapperTypeID: 3, Color: "gray", URL: "https://echo.msk.ru"},       // 4
 	{Name: "OnoMedia", ScrapperTypeID: 1, Color: "yellow", URL: "https://onomedia.today"},    // 5
 	{Name: "Медиазона", ScrapperTypeID: 3, Color: "red", URL: "https://zona.media"},          // 6
+	{Name: "Новая Газета", ScrapperTypeID: 4, Color: "blue", URL: "https://novayagazeta.ru"}, // 7
 }

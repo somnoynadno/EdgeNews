@@ -19,4 +19,9 @@ func StartAllCrawlers() {
 		zonaMediaCrawler := crawlers.ZonaMediaCrawler{}
 		go zonaMediaCrawler.RunForever()
 	}
+
+	if c.ScrappingEnabled.NovayaGazetaCrawler == true {
+		novayaGazetaCrawler := crawlers.NovayaGazetaCrawler{}
+		go novayaGazetaCrawler.RunForever()
+	}
 }

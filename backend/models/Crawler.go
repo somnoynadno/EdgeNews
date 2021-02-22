@@ -34,7 +34,7 @@ func (c StaticWebCrawler) StartTextStream(textStream entities.TextStream) {
 }
 
 func (c StaticWebCrawler) SaveMessage(message entities.Message) error {
-	exist, err := dao.CheckMessageExistByBody(message.Body)
+	exist, err := dao.CheckMessageExist(message.Body, message.TextStreamID)
 	if err != nil {
 		return err
 	}
@@ -53,3 +53,38 @@ func (c StaticWebCrawler) SaveMessage(message entities.Message) error {
 	return nil
 }
 
+type DynamicWebCrawler struct {
+	AbstractCrawler
+}
+
+func (c DynamicWebCrawler) RunForever() {
+	log.Panic("should implement")
+}
+
+func (c DynamicWebCrawler) FindAvailableTextStreams() error {
+	return errors.New("should implement")
+}
+
+func (c DynamicWebCrawler) StartTextStream(textStream entities.TextStream) {
+	log.Panic("should implement")
+}
+
+func (c DynamicWebCrawler) SaveMessage(message entities.Message) error {
+	exist, err := dao.CheckMessageExist(message.Body, message.TextStreamID)
+	if err != nil {
+		return err
+	}
+
+	if !exist {
+		err = dao.AddMessage(&message)
+		if err != nil {
+			return err
+		}
+
+		b, _ := json.Marshal(message)
+		utils.GetMetrics().WS.BroadcastMessages.WithLabelValues("dynamic crawler").Inc()
+		go server.GetTextStreamHub().SendMessage(b)
+	}
+
+	return nil
+}

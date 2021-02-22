@@ -70,8 +70,8 @@ func (c ZonaMediaCrawler) FindAvailableTextStreams() error {
 			if !exists {
 				textStream := entities.TextStream{
 					SourceID: 6,
-					URL: link,
-					Name: s.Find("header").Text(),
+					URL:      link,
+					Name:     s.Find("header").Text(),
 					IsActive: true,
 				}
 
@@ -160,9 +160,9 @@ func (c ZonaMediaCrawler) fetchMessages(textStream entities.TextStream) (int, er
 		text := ""
 		s.Find("body p").Each(func(i int, c *goquery.Selection) {
 			text += c.Text() + "\n"
- 		})
+		})
 
-		exists, err := dao.CheckMessageExistByBody(text)
+		exists, err := dao.CheckMessageExist(text, textStream.ID)
 		if err != nil {
 			log.Error("[ZONA MEDIA CRAWLER] " + err.Error())
 		} else {
@@ -170,8 +170,8 @@ func (c ZonaMediaCrawler) fetchMessages(textStream entities.TextStream) (int, er
 				newMessages++
 				message := entities.Message{
 					TextStreamID: textStream.ID,
-					Body: text,
-					Time: &t,
+					Body:         text,
+					Time:         &t,
 				}
 				err := c.SaveMessage(message)
 				if err != nil {

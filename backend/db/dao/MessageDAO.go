@@ -6,9 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func CheckMessageExistByBody(body string) (bool, error) {
+func CheckMessageExist(body string, textStreamID uint) (bool, error) {
 	var message entities.Message
-	err := db.GetDB().Where("body = ?", body).First(&message).Error
+	err := db.GetDB().Where("text_stream_id = ?", textStreamID).
+		Where("body = ?", body).First(&message).Error
 	if err == gorm.ErrRecordNotFound {
 		return false, nil
 	} else {

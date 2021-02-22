@@ -9,5 +9,5 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/prometheus/client_golang v1.9.0
 	github.com/sirupsen/logrus v1.7.0
-	golang.org/x/text v0.3.2
+	github.com/tebeka/selenium v0.9.9
 )
