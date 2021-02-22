@@ -15,6 +15,7 @@ type AbstractCrawler interface {
 	FindAvailableTextStreams() error
 	StartTextStream(textStream entities.TextStream)
 	SaveMessage(message entities.Message) error
+	RecoverAfterRestart(sourceID uint, crawler AbstractCrawler) error
 }
 
 type StaticWebCrawler struct {
@@ -53,6 +54,18 @@ func (c StaticWebCrawler) SaveMessage(message entities.Message) error {
 	return nil
 }
 
+func (c StaticWebCrawler) RecoverAfterRestart(sourceID uint, crawler AbstractCrawler) error {
+	ts, err := dao.GetActiveTextStreamsBySourceID(sourceID)
+	if err != nil {
+		return err
+	}
+	for _, t := range ts {
+		go crawler.StartTextStream(t)
+	}
+
+	return nil
+}
+
 type DynamicWebCrawler struct {
 	AbstractCrawler
 }
@@ -84,6 +97,18 @@ func (c DynamicWebCrawler) SaveMessage(message entities.Message) error {
 		b, _ := json.Marshal(message)
 		utils.GetMetrics().WS.BroadcastMessages.WithLabelValues("dynamic crawler").Inc()
 		go server.GetTextStreamHub().SendMessage(b)
+	}
+
+	return nil
+}
+
+func (c DynamicWebCrawler) RecoverAfterRestart(sourceID uint, crawler AbstractCrawler) error {
+	ts, err := dao.GetActiveTextStreamsBySourceID(sourceID)
+	if err != nil {
+		return err
+	}
+	for _, t := range ts {
+		go crawler.StartTextStream(t)
 	}
 
 	return nil

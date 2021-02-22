@@ -64,6 +64,11 @@ func (c NovayaGazetaCrawler) RunForever() {
 
 	novayaGazetaWD = wd
 
+	err = c.RecoverAfterRestart(7, c)
+	if err != nil {
+		log.Warn("[NOVAYA GAZETA CRAWLER] Recovering: " + err.Error())
+	}
+
 	for {
 		log.Debug("[NOVAYA GAZETA CRAWLER] Awake")
 

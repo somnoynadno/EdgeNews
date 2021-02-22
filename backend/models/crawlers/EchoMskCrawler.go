@@ -23,6 +23,11 @@ func (c EchoMskCrawler) RunForever() {
 	log.Info("[ECHO MSK CRAWLER] Starting...")
 	sleepTime := config.GetConfig().ScrappingIntervals.EchoMskCrawler
 
+	err := c.RecoverAfterRestart(4, c)
+	if err != nil {
+		log.Warn("[ECHO MSK CRAWLER] Recovering: " + err.Error())
+	}
+
 	for {
 		log.Debug("[ECHO MSK CRAWLER] Awake")
 

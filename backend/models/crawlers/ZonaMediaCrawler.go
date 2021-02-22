@@ -23,6 +23,11 @@ func (c ZonaMediaCrawler) RunForever() {
 	log.Info("[ZONA MEDIA CRAWLER] Starting...")
 	sleepTime := config.GetConfig().ScrappingIntervals.ZonaMediaCrawler
 
+	err := c.RecoverAfterRestart(6, c)
+	if err != nil {
+		log.Warn("[ZONA MEDIA CRAWLER] Recovering: " + err.Error())
+	}
+
 	for {
 		log.Debug("[ZONA MEDIA CRAWLER] Awake")
 

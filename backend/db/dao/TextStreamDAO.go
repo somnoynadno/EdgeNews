@@ -35,3 +35,10 @@ func GetActiveTextStreams() ([]entities.TextStream, error) {
 		Where("is_active = true").Find(&textStreams).Error
 	return textStreams, err
 }
+
+func GetActiveTextStreamsBySourceID(sourceID uint) ([]entities.TextStream, error) {
+	var textStreams []entities.TextStream
+	err := db.GetDB().Preload("Source").Preload("Source.ScrapperType").
+		Where("source_id = ?", sourceID).Where("is_active = true").Find(&textStreams).Error
+	return textStreams, err
+}
