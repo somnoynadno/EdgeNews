@@ -90,6 +90,6 @@ func (s MeduzaScrapper) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("meduza api").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }

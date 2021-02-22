@@ -34,7 +34,7 @@ func (c EchoMskCrawler) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("echo msk").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }
 
@@ -117,7 +117,7 @@ func (c EchoMskCrawler) StartTextStream(textStream entities.TextStream) {
 			break
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 
 	finished := false
@@ -125,7 +125,7 @@ func (c EchoMskCrawler) StartTextStream(textStream entities.TextStream) {
 		err := dao.FinishTextStream(&textStream)
 		if err != nil {
 			log.Error("[ECHO MSK CRAWLER] " + err.Error())
-			time.Sleep(sleepTime * time.Second)
+			time.Sleep(sleepTime)
 		} else {
 			finished = true
 		}

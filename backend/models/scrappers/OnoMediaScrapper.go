@@ -90,6 +90,6 @@ func (s OnoMediaScrapper) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("ono media api").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }

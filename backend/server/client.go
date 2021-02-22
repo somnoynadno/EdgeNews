@@ -26,7 +26,7 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-// Client is a middleman between the websocket connection and the newsHub.
+// Client is a middleman between the websocket connection and the Hub.
 type Client struct {
 	hub *Hub
 
@@ -37,7 +37,7 @@ type Client struct {
 	send chan []byte
 }
 
-// readPump pumps messages from the websocket connection to the newsHub.
+// readPump pumps messages from the websocket connection to the Hub.
 //
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
@@ -63,7 +63,7 @@ func (c *Client) readPump() {
 	}
 }
 
-// writePump pumps messages from the newsHub to the websocket connection.
+// writePump pumps messages from the Hub to the websocket connection.
 //
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
@@ -82,7 +82,7 @@ func (c *Client) writePump() {
 		case message, ok := <-c.send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				// The newsHub closed the channel.
+				// The Hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
@@ -93,7 +93,6 @@ func (c *Client) writePump() {
 			}
 			w.Write(message)
 
-			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
 			for i := 0; i < n; i++ {
 				w.Write(newline)

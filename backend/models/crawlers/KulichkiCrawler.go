@@ -37,7 +37,7 @@ func (c KulichkiCrawler) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("kulichki").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }
 
@@ -132,7 +132,7 @@ func (c KulichkiCrawler) StartTextStream(textStream entities.TextStream) {
 			break
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 
 	finished := false
@@ -140,7 +140,7 @@ func (c KulichkiCrawler) StartTextStream(textStream entities.TextStream) {
 		err := dao.FinishTextStream(&textStream)
 		if err != nil {
 			log.Error("[KULICHKI CRAWLER] " + err.Error())
-			time.Sleep(sleepTime * time.Second)
+			time.Sleep(sleepTime)
 		} else {
 			finished = true
 		}

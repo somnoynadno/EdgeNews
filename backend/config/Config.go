@@ -36,24 +36,24 @@ var config *Config
 func init() {
 	defaultConfig := Config{
 		ScrappingIntervals: ScrappingIntervals{
-			MeduzaAPI:        1 * 60,
-			NewsAPI:          3 * 60,
-			NewscatcherAPI:   6 * 60,
-			OnoMediaAPI:      1 * 60,
-			EchoMskCrawler:   3 * 60,
-			KulichkiCrawler:  3 * 60,
-			ZonaMediaCrawler: 3 * 60,
+			MeduzaAPI:        1 * time.Minute,
+			NewsAPI:          3 * time.Minute,
+			NewscatcherAPI:   6 * time.Minute,
+			OnoMediaAPI:      1 * time.Minute,
+			EchoMskCrawler:   3 * time.Minute,
+			KulichkiCrawler:  3 * time.Minute,
+			ZonaMediaCrawler: 3 * time.Minute,
 		},
 		ScrappingEnabled: ScrappingEnabled{
-			MeduzaAPI:        true,
-			NewsAPI:          true,
-			NewscatcherAPI:   true,
-			OnoMediaAPI:      true,
+			MeduzaAPI:        false,
+			NewsAPI:          false,
+			NewscatcherAPI:   false,
+			OnoMediaAPI:      false,
 			EchoMskCrawler:   true,
-			KulichkiCrawler:  true,
+			KulichkiCrawler:  false,
 			ZonaMediaCrawler: true,
 		},
-		TextStreamUpdateInterval:  1 * 60,
+		TextStreamUpdateInterval:  1 * time.Minute,
 		TextStreamMaxEmptyFetches: 12 * 60,
 	}
 

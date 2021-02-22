@@ -34,7 +34,7 @@ func (c ZonaMediaCrawler) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("zona media").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }
 
@@ -117,7 +117,7 @@ func (c ZonaMediaCrawler) StartTextStream(textStream entities.TextStream) {
 			break
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 
 	finished := false
@@ -125,7 +125,7 @@ func (c ZonaMediaCrawler) StartTextStream(textStream entities.TextStream) {
 		err := dao.FinishTextStream(&textStream)
 		if err != nil {
 			log.Error("[ZONA MEDIA CRAWLER] " + err.Error())
-			time.Sleep(sleepTime * time.Second)
+			time.Sleep(sleepTime)
 		} else {
 			finished = true
 		}

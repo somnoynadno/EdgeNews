@@ -85,6 +85,6 @@ func (s NewsAPIScrapper) RunForever() {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("news api").Inc()
 		}
 
-		time.Sleep(sleepTime * time.Second)
+		time.Sleep(sleepTime)
 	}
 }
