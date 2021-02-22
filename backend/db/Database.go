@@ -34,6 +34,11 @@ func init() {
 	} else {
 		log.Info("[DB] Schema migrated successfully")
 	}
+
+	err = initDefaults()
+	if err != nil {
+		log.Fatal("[DB] Initializing error: " + err.Error())
+	}
 }
 
 func GetDB() *gorm.DB {
@@ -50,4 +55,40 @@ func migrateSchema() error {
 	).Error
 
 	return err
+}
+
+func initDefaults() error {
+	for i, st := range entities.DefaultScrapperTypes {
+		var q entities.ScrapperType
+		err := db.Where("id = ?", i + 1).First(&q).Error
+		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				log.Info("[DB] Creating '" + st.Name + "' scrapper type")
+				err = db.Create(&st).Error
+				if err != nil {
+					return err
+				}
+			} else {
+				return err
+			}
+		}
+	}
+
+	for i, s := range entities.DefaultSources {
+		var q entities.Source
+		err := db.Where("id = ?", i + 1).First(&q).Error
+		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				log.Info("[DB] Creating '" + s.Name + "' source")
+				err = db.Create(&s).Error
+				if err != nil {
+					return err
+				}
+			} else {
+				return err
+			}
+		}
+	}
+
+	return nil
 }

@@ -15,11 +15,6 @@ func StartAllCrawlers() {
 		go echoMskCrawler.RunForever()
 	}
 
-	if c.ScrappingEnabled.KulichkiCrawler == true {
-		kulichkiCrawler := crawlers.KulichkiCrawler{}
-		go kulichkiCrawler.RunForever()
-	}
-
 	if c.ScrappingEnabled.ZonaMediaCrawler == true {
 		zonaMediaCrawler := crawlers.ZonaMediaCrawler{}
 		go zonaMediaCrawler.RunForever()

@@ -54,7 +54,7 @@ func init() {
 			ZonaMediaCrawler: true,
 		},
 		TextStreamUpdateInterval:  1 * time.Minute,
-		TextStreamMaxEmptyFetches: 12 * 60,
+		TextStreamMaxEmptyFetches: 24 * 60,
 	}
 
 	config = &defaultConfig

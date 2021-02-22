@@ -69,7 +69,7 @@ func (c ZonaMediaCrawler) FindAvailableTextStreams() error {
 
 			if !exists {
 				textStream := entities.TextStream{
-					SourceID: 7,
+					SourceID: 6,
 					URL: link,
 					Name: s.Find("header").Text(),
 					IsActive: true,
