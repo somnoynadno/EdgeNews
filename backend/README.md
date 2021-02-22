@@ -14,8 +14,11 @@
 - db_port=5432
 - news_api_token=<your_token> // при наличии
 - newscatcher_api_token=<your_token> // при наличии
+- selenium_path=<path_to_standalone_selenium>
+- gecko_driver_path=<path_to_gecko_driver>
 
-Для прокидывания в докер контейнер эти значения должны быть записаны в ```.env``` файл данной директории.
+Для прокидывания в докер контейнер эти значения должны быть записаны в ```.env``` 
+файл данной директории (существует по умолчанию).
 
 ## Конфигурация
 
