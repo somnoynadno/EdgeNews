@@ -58,10 +58,6 @@ func (c NovayaGazetaCrawler) RunForever() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	defer s.Stop()
-	defer wd.Quit()
-
 	novayaGazetaWD = wd
 
 	err = c.RecoverAfterRestart(7, c)
@@ -69,15 +65,39 @@ func (c NovayaGazetaCrawler) RunForever() {
 		log.Warn("[NOVAYA GAZETA CRAWLER] Recovering: " + err.Error())
 	}
 
+	err = wd.Quit()
+	if err != nil {
+		log.Error("[NOVAYA GAZETA CRAWLER] Quit browser: " + err.Error())
+	}
+	err = s.Stop()
+	if err != nil {
+		log.Error("[NOVAYA GAZETA CRAWLER] Stop selenium: " + err.Error())
+	}
+
 	for {
 		log.Debug("[NOVAYA GAZETA CRAWLER] Awake")
 
-		err := c.FindAvailableTextStreams()
+		wd, s, err := c.initWebDriver()
+		if err != nil {
+			log.Fatal("[NOVAYA GAZETA CRAWLER] " + err.Error())
+		}
+		novayaGazetaWD = wd
+
+		err = c.FindAvailableTextStreams()
 		if err != nil {
 			log.Error("[NOVAYA GAZETA CRAWLER] Crawling failed: " + err.Error())
 			utils.GetMetrics().Scrapings.Failed.WithLabelValues("novaya gazeta").Inc()
 		} else {
 			utils.GetMetrics().Scrapings.Done.WithLabelValues("novaya gazeta").Inc()
+		}
+
+		err = wd.Quit()
+		if err != nil {
+			log.Error("[NOVAYA GAZETA CRAWLER] Quit browser: " + err.Error())
+		}
+		err = s.Stop()
+		if err != nil {
+			log.Error("[NOVAYA GAZETA CRAWLER] Stop selenium: " + err.Error())
 		}
 
 		time.Sleep(sleepTime)
@@ -120,7 +140,7 @@ func (c NovayaGazetaCrawler) FindAvailableTextStreams() error {
 	for i, href := range links {
 		isOnline, err := c.checkArticleIsOnline(href)
 		if err != nil {
-			log.Error(err)
+			log.Error("[NOVAYA GAZETA CRAWLER] " + err.Error())
 			continue
 		}
 
@@ -143,7 +163,7 @@ func (c NovayaGazetaCrawler) FindAvailableTextStreams() error {
 
 				err := dao.AddTextStream(&textStream)
 				if err != nil {
-					log.Error(err)
+					log.Error("[NOVAYA GAZETA CRAWLER] " + err.Error())
 				} else {
 					go c.StartTextStream(textStream)
 				}
@@ -209,8 +229,8 @@ func (c NovayaGazetaCrawler) fetchMessages(textStream entities.TextStream) (int,
 		return newMessages, err
 	}
 
-	defer wd.Quit()
 	defer s.Stop()
+	defer wd.Quit()
 
 	err = wd.Get(textStream.URL)
 	if err != nil {
